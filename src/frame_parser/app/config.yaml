@@ -1,0 +1,11 @@
+predictor:
+  model_path: /Users/fajar/Code/PyFrameParser/model/model.tar.gz
+  model_type: LOME
+  gpu: -1
+
+credentials:
+  credentials_path: /Users/fajar/Code/PyFrameParser/src/frame_parser/app/creds.csv
+  ttl: 10
+
+api:
+  ttl: 10

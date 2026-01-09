@@ -3,12 +3,7 @@ from typing import Any, Dict, List, Literal, Union
 
 import pandas as pd
 
-from frame_parser.core import SpanPredictor
-from frame_parser.core.predictor import (
-    FrameParsingResult,
-    load_frame_model,
-    text_frame_parser,
-)
+from frame_parser import FrameParser, TextFrameResult
 
 
 def parse(
@@ -40,7 +35,7 @@ def parse(
             "Unsupported input file format. Please provide a .jsonl or .csv file."
         )
 
-    predictor: SpanPredictor = load_frame_model(
+    parser: FrameParser = FrameParser.load_frame_model(
         model_path=model_path,
         model_type=model_type,
         gpu=gpu,
@@ -49,10 +44,7 @@ def parse(
     # parse and collect results
     records: List[Dict[str, Any]] = []
     for text in texts:
-        result: FrameParsingResult = text_frame_parser(
-            predictor=predictor,
-            text=text,
-        )
+        result: TextFrameResult = parser.text_frame_parser(text)
         records.append(result.to_dict())
 
     results = pd.DataFrame.from_records(records)

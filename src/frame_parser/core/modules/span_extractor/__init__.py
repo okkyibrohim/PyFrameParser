@@ -1,1 +1,0 @@
-from .combo import ComboSpanExtractor

@@ -1,12 +1,12 @@
 [project]
-name = "frame-parser-server"
+name = "pyframeparser-server"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = "==3.8.*"
 dependencies = [
-  "frame-parser",
+  "pyframeparser",
 ]
 
 [tool.uv.sources]
-frame-parser = { workspace = true }
+pyframeparser = { workspace = true }

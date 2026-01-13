@@ -32,7 +32,7 @@ To use the Frame Parser via HTTP API, you can make a request to the following en
 This endpoint accepts a JSON payload with the following structure:
 
 ```bash
-curl -X POST http://localhost:8000/parse \
+curl -X POST http://localhost:8000/v1/parse \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer {TOKEN}" \
     -d '{"text": "input text to be parsed"}'

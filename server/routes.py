@@ -29,12 +29,13 @@ class APIError(Exception):
 @bp.route("/health", methods=["GET"])
 def health_check():
     from flask import jsonify
+
     return jsonify({"status": "ok"}), 200
 
 
-@bp.route("/parse", methods=["POST"])
+@bp.route("/v1/parse", methods=["POST"])
 def parse_text():
-    from flask import request, current_app, jsonify, Response
+    from flask import Response, current_app, jsonify, request
 
     limiter: RateLimiterStore = current_app.extensions["RATE_LIMITER"]
     credentials: CredentialsStore = current_app.extensions["CREDENTIALS"]

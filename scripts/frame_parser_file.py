@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Literal, Union
 
 import pandas as pd
 
-from frame_parser import FrameParser, TextFrameResult
+from pyframeparser import FrameParser, TextFrameResult
 
 
 def parse(

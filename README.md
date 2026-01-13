@@ -20,6 +20,23 @@ pip install pyframeparser
 As currently the package only support LOME implementation that requires Python 3.8, no other versions are supported at this time.  
 It is recommended to use a virtual environment for installation.
 
+## Usage
+
+Here is a simple example of how to use the Frame Parser in your Python code:
+
+```python
+from pyframeparser import FrameParser, TextFrameResult
+
+parser: FrameParser = FrameParser.load_frame_model(
+    model_path="path/to/model/model.tar.gz",
+    model_type="LOME", # optional, default to LOME
+    gpu=-1, # optional, default to -1 (CPU only)
+)
+
+result: TextFrameResult = parser.text_frame_parser("input text to be parsed")
+print(result)
+```
+
 ## HTTP API Usage
 
 The API is free to use for research purposes, but requires an API token.  
@@ -27,7 +44,7 @@ Please contact [muhammadokky@ut.ee](mailto:muhammadokky@ut.ee) to request access
 
 To use the Frame Parser via HTTP API, you can make a request to the following endpoint:
 
-### POST /parse
+### POST /v1/parse
 
 This endpoint accepts a JSON payload with the following structure:
 
@@ -46,29 +63,22 @@ The response will contain the parsed frame semantic information in JSON format:
     "frame_list": [
         [
             "FrameName1",
-            "Target1"
-        ],
-        [
-            "FrameName2",
-            "Target2"
+            "text"
         ]
     ],
     "frame_tree": [
         {
-            "frame": "FrameName1",
-            "target": "Target1",
-            "arguments": {
-                "Arg1": "Value1",
-                "Arg2": "Value2"
-            }
-        },
-        {
-            "frame": "FrameName2",
-            "target": "Target2",
-            "arguments": {
-                "ArgA": "ValueA",
-                "ArgB": "ValueB"
-            }
+            "label": "FrameName1",
+            "span": [2, 2],
+            "confidence": 1.0,
+            "children": [
+                {
+                    "label": "FrameChildName1",
+                    "span": [3, 5],
+                    "confidence": 0.9999394416809082,
+                    "children": []
+                }
+            ]
         }
     ]
 }

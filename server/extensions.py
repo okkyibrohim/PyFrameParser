@@ -7,7 +7,7 @@ from typing import Dict, Literal, Tuple, TypedDict, Union
 
 from flask import Flask
 
-from frame_parser import FrameParser, TextFrameResult
+from pyframeparser import FrameParser, TextFrameResult
 
 from .config import APIConfig, CredentialsConfig, PredictorConfig
 

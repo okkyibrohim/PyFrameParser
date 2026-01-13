@@ -4,7 +4,7 @@ predictor:
   gpu: -1
 
 credentials:
-  credentials_path: /Users/fajar/Code/PyFrameParser/src/frame_parser/app/creds.csv
+  credentials_path: /Users/fajar/Code/PyFrameParser/server/creds.csv
   ttl: 10
 
 api:

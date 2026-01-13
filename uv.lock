@@ -4,8 +4,8 @@ requires-python = "==3.8.*"
 
 [manifest]
 members = [
-    "frame-parser",
-    "frame-parser-server",
+    "pyframeparser",
+    "pyframeparser-server",
 ]
 
 [[package]]
@@ -324,56 +324,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/41/e1/d104c83026f8d35df
 wheels = [
     { url = "https://files.pythonhosted.org/packages/61/80/ffe1da13ad9300f87c93af113edd0638c75138c42a0994becfacac078c06/flask-3.0.3-py3-none-any.whl", hash = "sha256:34e815dfaa43340d1d15a5c3a02b8476004037eb4840b34910c6e21679d288f3", size = 101735, upload-time = "2024-04-07T19:26:08.569Z" },
 ]
-
-[[package]]
-name = "frame-parser"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "allennlp" },
-    { name = "concrete" },
-    { name = "flask" },
-    { name = "google-api-core" },
-    { name = "google-auth" },
-    { name = "gunicorn" },
-    { name = "overrides" },
-    { name = "pandas" },
-    { name = "spacy" },
-    { name = "tokenizers" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "allennlp", specifier = "==2.10.1" },
-    { name = "concrete", specifier = ">=4.18.2" },
-    { name = "flask", specifier = ">=3.0.3" },
-    { name = "google-api-core", specifier = "<2.28.0" },
-    { name = "google-auth", specifier = "<2.46.0" },
-    { name = "gunicorn", specifier = ">=23.0.0" },
-    { name = "overrides", specifier = "<5.0.0" },
-    { name = "pandas", specifier = ">=2.0.3" },
-    { name = "spacy", specifier = ">=3.3.3" },
-    { name = "tokenizers", specifier = ">=0.13.3" },
-]
-
-[package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.14.11" }]
-
-[[package]]
-name = "frame-parser-server"
-version = "0.1.0"
-source = { virtual = "server" }
-dependencies = [
-    { name = "frame-parser" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "frame-parser", editable = "." }]
 
 [[package]]
 name = "gitdb"
@@ -994,6 +944,56 @@ wheels = [
 ]
 
 [[package]]
+name = "pyframeparser"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "allennlp" },
+    { name = "concrete" },
+    { name = "flask" },
+    { name = "google-api-core" },
+    { name = "google-auth" },
+    { name = "gunicorn" },
+    { name = "overrides" },
+    { name = "pandas" },
+    { name = "spacy" },
+    { name = "tokenizers" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "allennlp", specifier = "==2.10.1" },
+    { name = "concrete", specifier = ">=4.18.2" },
+    { name = "flask", specifier = ">=3.0.3" },
+    { name = "google-api-core", specifier = "<2.28.0" },
+    { name = "google-auth", specifier = "<2.46.0" },
+    { name = "gunicorn", specifier = ">=23.0.0" },
+    { name = "overrides", specifier = "<5.0.0" },
+    { name = "pandas", specifier = ">=2.0.3" },
+    { name = "spacy", specifier = ">=3.3.3" },
+    { name = "tokenizers", specifier = ">=0.13.3" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "ruff", specifier = ">=0.14.11" }]
+
+[[package]]
+name = "pyframeparser-server"
+version = "0.1.0"
+source = { virtual = "server" }
+dependencies = [
+    { name = "pyframeparser" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "pyframeparser", editable = "." }]
+
+[[package]]
 name = "pygments"
 version = "2.19.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1247,15 +1247,15 @@ wheels = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.48.0"
+version = "2.49.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/40/f0/0e9dc590513d5e742d7799e2038df3a05167cba084c6ca4f3cdd75b55164/sentry_sdk-2.48.0.tar.gz", hash = "sha256:5213190977ff7fdff8a58b722fb807f8d5524a80488626ebeda1b5676c0c1473", size = 384828, upload-time = "2025-12-16T14:55:41.722Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/02/94/23ac26616a883f492428d9ee9ad6eee391612125326b784dbfc30e1e7bab/sentry_sdk-2.49.0.tar.gz", hash = "sha256:c1878599cde410d481c04ef50ee3aedd4f600e4d0d253f4763041e468b332c30", size = 387228, upload-time = "2026-01-08T09:56:25.642Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/19/8d77f9992e5cbfcaa9133c3bf63b4fbbb051248802e1e803fed5c552fbb2/sentry_sdk-2.48.0-py2.py3-none-any.whl", hash = "sha256:6b12ac256769d41825d9b7518444e57fa35b5642df4c7c5e322af4d2c8721172", size = 414555, upload-time = "2025-12-16T14:55:40.152Z" },
+    { url = "https://files.pythonhosted.org/packages/88/43/1c586f9f413765201234541857cb82fda076f4b0f7bad4a0ec248da39cf3/sentry_sdk-2.49.0-py2.py3-none-any.whl", hash = "sha256:6ea78499133874445a20fe9c826c9e960070abeb7ae0cdf930314ab16bb97aa0", size = 415693, upload-time = "2026-01-08T09:56:21.872Z" },
 ]
 
 [[package]]
@@ -1473,11 +1473,11 @@ wheels = [
 
 [[package]]
 name = "tomli"
-version = "2.3.0"
+version = "2.4.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/52/ed/3f73f72945444548f33eba9a87fc7a6e969915e7b1acc8260b30e1f76a2f/tomli-2.3.0.tar.gz", hash = "sha256:64be704a875d2a59753d80ee8a533c3fe183e3f06807ff7dc2232938ccb01549", size = 17392, upload-time = "2025-10-08T22:01:47.119Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/82/30/31573e9457673ab10aa432461bee537ce6cef177667deca369efb79df071/tomli-2.4.0.tar.gz", hash = "sha256:aa89c3f6c277dd275d8e243ad24f3b5e701491a860d5121f2cdd399fbb31fc9c", size = 17477, upload-time = "2026-01-11T11:22:38.165Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/77/b8/0135fadc89e73be292b473cb820b4f5a08197779206b33191e801feeae40/tomli-2.3.0-py3-none-any.whl", hash = "sha256:e95b1af3c5b07d9e643909b5abbec77cd9f1217e6d0bca72b0234736b9fb1f1b", size = 14408, upload-time = "2025-10-08T22:01:46.04Z" },
+    { url = "https://files.pythonhosted.org/packages/23/d1/136eb2cb77520a31e1f64cbae9d33ec6df0d78bdf4160398e86eec8a8754/tomli-2.4.0-py3-none-any.whl", hash = "sha256:1f776e7d669ebceb01dee46484485f43a4048746235e683bcdffacdf1fb4785a", size = 14477, upload-time = "2026-01-11T11:22:37.446Z" },
 ]
 
 [[package]]

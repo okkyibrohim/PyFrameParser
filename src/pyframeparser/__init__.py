@@ -1,3 +1,10 @@
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("pyframeparser")
+except PackageNotFoundError:
+    __version__ = "unknown"
+
 from .data_reader import BetterDatasetReader, SRLDatasetReader
 from .metrics import BaseF, ExactMatch, FBetaMixMeasure, SRLMetric
 from .models import SpanModel

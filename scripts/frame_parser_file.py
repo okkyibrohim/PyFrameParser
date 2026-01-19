@@ -45,7 +45,7 @@ def parse(
     records: List[Dict[str, Any]] = []
     for text in texts:
         result: TextFrameResult = parser.text_frame_parser(text)
-        records.append(result.to_dict())
+        records.append(result.dict())
 
     results = pd.DataFrame.from_records(records)
 

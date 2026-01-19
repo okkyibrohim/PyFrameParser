@@ -1,27 +1,19 @@
 from __future__ import annotations
 
-import json
-from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Tuple, Union, cast
 
 from allennlp.predictors import Predictor
+from pydantic import BaseModel
 
 from .predictor import SpanPredictor
 from .utils import Span
 
 
-@dataclass
-class TextFrameResult:
+class TextFrameResult(BaseModel):
     text: str
     frame_list: List[Tuple[str, str]]
     frame_tree: List[Dict[str, Any]]
-
-    def to_json(self) -> str:
-        return json.dumps(asdict(self))
-
-    def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
 
 
 class FrameParser:
@@ -55,7 +47,7 @@ class FrameParser:
             predictor = SpanPredictor.from_path(
                 str(model_path),
                 cuda_device=gpu,
-            )  # type: ignore
+            )
 
             return cls(predictor)
 

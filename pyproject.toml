@@ -1,7 +1,7 @@
 [project]
 name = "pyframeparser"
 version = "0.1.0"
-description = "Add your description here"
+description = "Semantic frame parser for Python"
 readme = "README.md"
 requires-python = "==3.8.*"
 dependencies = [
@@ -13,6 +13,7 @@ dependencies = [
   "gunicorn>=23.0.0",
   "overrides<5.0.0",  # python version compatibility issue
   "pandas>=2.0.3",
+  "pydantic>=1.8.2",
   "spacy>=3.3.3",
   "tokenizers>=0.13.3",
 ]
@@ -23,8 +24,8 @@ dev = [
 ]
 
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 extend-include = ["*.ipynb"]

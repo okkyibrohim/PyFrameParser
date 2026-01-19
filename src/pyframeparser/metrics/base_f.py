@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Dict, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 from allennlp.training.metrics import Metric
 

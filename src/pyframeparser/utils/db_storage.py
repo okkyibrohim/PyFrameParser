@@ -27,14 +27,14 @@ class Cache:
         if isinstance(value, h5py.Dataset):
             return value[()]
         if value.dtype.name.startswith("bytes"):
-            return pickle.loads(value)  # type: ignore
+            return pickle.loads(value)
         return value
 
     def __getitem__(self, key):
         key = self._key(key)
         if key not in self:
             raise KeyError
-        return self._value(self.db_file[key])  # type: ignore
+        return self._value(self.db_file[key])
 
     def __setitem__(self, key, value) -> None:
         key = self._key(key)

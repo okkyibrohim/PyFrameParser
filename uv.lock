@@ -326,6 +326,19 @@ wheels = [
 ]
 
 [[package]]
+name = "flask-pydantic"
+version = "0.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flask" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a8/f4/34f688e8a15c1efc7caede3cb9f81f9824e2daccd4b41436a28b2cb5c518/Flask-Pydantic-0.11.0.tar.gz", hash = "sha256:eef679b24e34ffb02e24e1d998ac023007aa2b531927fdc2f9b8114a12c19bb4", size = 9821, upload-time = "2022-09-25T09:01:42.187Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9d/6d/9e58e9b7151a64197850c643d5587e4be09208fdd57492dcfd61a7c06468/Flask_Pydantic-0.11.0-py3-none-any.whl", hash = "sha256:c5a6283d1227631683ceb72a41f652036829476fbb6e7b6ccef8cae8ed51ebab", size = 10071, upload-time = "2022-09-25T09:01:38.781Z" },
+]
+
+[[package]]
 name = "gitdb"
 version = "4.0.12"
 source = { registry = "https://pypi.org/simple" }
@@ -956,6 +969,7 @@ dependencies = [
     { name = "gunicorn" },
     { name = "overrides" },
     { name = "pandas" },
+    { name = "pydantic" },
     { name = "spacy" },
     { name = "tokenizers" },
 ]
@@ -975,6 +989,7 @@ requires-dist = [
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "overrides", specifier = "<5.0.0" },
     { name = "pandas", specifier = ">=2.0.3" },
+    { name = "pydantic", specifier = ">=1.8.2" },
     { name = "spacy", specifier = ">=3.3.3" },
     { name = "tokenizers", specifier = ">=0.13.3" },
 ]
@@ -987,11 +1002,19 @@ name = "pyframeparser-server"
 version = "0.1.0"
 source = { virtual = "server" }
 dependencies = [
+    { name = "flask-pydantic" },
+    { name = "gunicorn" },
+    { name = "pydantic" },
     { name = "pyframeparser" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "pyframeparser", editable = "." }]
+requires-dist = [
+    { name = "flask-pydantic", specifier = ">=0.11.0" },
+    { name = "gunicorn", specifier = ">=23.0.0" },
+    { name = "pydantic", specifier = ">=1.8.2" },
+    { name = "pyframeparser", editable = "." },
+]
 
 [[package]]
 name = "pygments"

@@ -6,7 +6,14 @@ import numpy as np
 from allennlp.common.util import END_SYMBOL
 from allennlp.data import DatasetReader
 from allennlp.data.dataset_readers.dataset_utils import bio_tags_to_spans
-from allennlp.data.fields import ArrayField, Field, LabelField, ListField, TextField
+from allennlp.data.fields import (
+    ArrayField,
+    Field,
+    LabelField,
+    ListField,
+    MetadataField,
+    TextField,
+)
 from allennlp.data.token_indexers import PretrainedTransformerIndexer
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer, Token
 

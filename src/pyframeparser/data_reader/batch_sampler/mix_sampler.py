@@ -16,7 +16,7 @@ class MixSampler(MaxTokensBatchSampler):
         padding_noise: float = 0.1,
         sampling_ratios: Optional[Dict[str, float]] = None,
     ):
-        super().__init__(max_tokens, sorting_keys, padding_noise)  # type: ignore
+        super().__init__(max_tokens, sorting_keys, padding_noise)
 
         self.sampling_ratios = sampling_ratios or dict()
 

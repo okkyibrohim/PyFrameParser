@@ -4,6 +4,8 @@ from typing import Literal, Union
 
 from yaml import safe_load
 
+from .constants import CONFIG_API, CONFIG_CREDENTIALS, CONFIG_PREDICTOR
+
 
 @dataclass
 class PredictorConfig:
@@ -37,9 +39,11 @@ def load_config(path: Union[str, Path]) -> Config:
     with Path(path).open("r") as f:
         config_dict = safe_load(f)
 
-    predictor_cfg = PredictorConfig(**config_dict.get("predictor", {}))
-    credentials_cfg = CredentialsConfig(**config_dict.get("credentials", {}))
-    api_cfg = APIConfig(**config_dict.get("api", {}))
+    predictor_cfg = PredictorConfig(**config_dict.get(CONFIG_PREDICTOR.lower(), {}))
+    credentials_cfg = CredentialsConfig(
+        **config_dict.get(CONFIG_CREDENTIALS.lower(), {})
+    )
+    api_cfg = APIConfig(**config_dict.get(CONFIG_API.lower(), {}))
 
     return Config(
         PREDICTOR=predictor_cfg,

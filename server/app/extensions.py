@@ -10,6 +10,14 @@ from flask import Flask
 from pyframeparser import FrameParser, TextFrameResult
 
 from .config import APIConfig, CredentialsConfig, PredictorConfig
+from .constants import (
+    CONFIG_API,
+    CONFIG_CREDENTIALS,
+    CONFIG_PREDICTOR,
+    EXTENSION_CREDENTIALS,
+    EXTENSION_PREDICTOR,
+    EXTENSION_RATE_LIMITER,
+)
 
 
 class Credential(TypedDict):
@@ -30,8 +38,8 @@ class CredentialsStore:
 
     @classmethod
     def init_app(cls, app: Flask):
-        cfg: CredentialsConfig = app.config["CREDENTIALS"]
-        app.extensions["CREDENTIALS"] = cls(
+        cfg: CredentialsConfig = app.config[CONFIG_CREDENTIALS]
+        app.extensions[EXTENSION_CREDENTIALS] = cls(
             path=cfg.credentials_path,
             ttl=cfg.ttl,
         )
@@ -50,7 +58,7 @@ class CredentialsStore:
 
         return credentials
 
-    def validate(self, token: str, counter: int) -> Tuple[int, int]:
+    def validate(self, token: str, counter: int) -> Tuple[bool, int]:
         with self._lock:
             try:
                 mtime = self.path.stat().st_mtime
@@ -91,8 +99,8 @@ class PredictorStore:
 
     @classmethod
     def init_app(cls, app: Flask):
-        cfg: PredictorConfig = app.config["PREDICTOR"]
-        app.extensions["PREDICTOR"] = cls(
+        cfg: PredictorConfig = app.config[CONFIG_PREDICTOR]
+        app.extensions[EXTENSION_PREDICTOR] = cls(
             model_path=cfg.model_path,
             model_type=cfg.model_type,
             gpu=cfg.gpu,
@@ -101,7 +109,7 @@ class PredictorStore:
     def _load_model(self):
         return FrameParser.load_frame_model(
             model_path=self.model_path,
-            model_type=self.model_type,  # type: ignore
+            model_type=self.model_type,
             gpu=self.gpu,
         )
 
@@ -119,8 +127,8 @@ class RateLimiterStore:
 
     @classmethod
     def init_app(cls, app: Flask):
-        cfg: APIConfig = app.config["API"]
-        app.extensions["RATE_LIMITER"] = cls(ttl=cfg.ttl)
+        cfg: APIConfig = app.config[CONFIG_API]
+        app.extensions[EXTENSION_RATE_LIMITER] = cls(ttl=cfg.ttl)
 
     def increment(self, token: str) -> int:
         with self._lock:

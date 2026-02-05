@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Union
 
 from flask import Flask
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .config import Config as AppConfig
 from .config import load_config
@@ -20,5 +21,15 @@ def create_app(config_path: Union[Path, str]) -> Flask:
 
     # register routes
     app.register_blueprint(bp)
+
+    # apply middleware
+    app.wsgi_app = ProxyFix(  # ty:ignore[invalid-assignment]
+        app.wsgi_app,
+        x_for=1,
+        x_proto=1,
+        x_host=1,
+        x_port=1,
+        x_prefix=1,
+    )
 
     return app

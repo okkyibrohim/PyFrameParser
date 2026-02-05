@@ -1,6 +1,11 @@
+import tempfile
+
 from pathlib import Path
 
 from app import create_app
+
+# force tmp dir
+tempfile.tempdir = "/home/admin/tmp"
 
 CONFIG_PATH = Path(__file__).parent / "config" / "config.yaml"
 

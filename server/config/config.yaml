@@ -1,10 +1,10 @@
 predictor:
-  model_path: /Users/fajar/Code/PyFrameParser/model/model.tar.gz
+  model_path: "C:/Users/moham/OneDrive/Desktop/Penelitian/parser/parser/sftp/model_fixed.tar.gz"
   model_type: LOME
   gpu: -1
 
 credentials:
-  credentials_path: /Users/fajar/Code/PyFrameParser/server/config/creds.csv
+  credentials_path: "C:/Users/moham/OneDrive/Desktop/Penelitian/PyFrameParser/server/config/creds.csv"
   ttl: 10
 
 api:

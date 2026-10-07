@@ -119,7 +119,7 @@ If you use this library in your research, please cite the following paper:
 
 - [@okkyibrohim](https://github.com/okkyibrohim)
 - [@fgarnadi](https://github.com/fgarnadi)
-- [@mohamadarvin25](https://github.com/mohammadarvin25)
+- [@mohamadarvin25](https://github.com/mohamadarvin25)
 - [@kimnzh](https://github.com/kimnzh)
 
 ## License

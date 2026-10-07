@@ -40,7 +40,7 @@ print(result)
 ## HTTP API Usage
 
 The API is free to use for research purposes, but requires an API token.  
-Please contact [muhammadokky@ut.ee](mailto:muhammadokky@ut.ee) to request access using an academic email (and CC your supervisor if you are a university student).
+Please contact [okkyibrohim@cs.ui.ac.id](mailto:okkyibrohim@cs.ui.ac.id) to request access using an academic email (and CC your supervisor if you are a university student).
 
 To use the Frame Parser via HTTP API, you can make a request to the following endpoint:
 
@@ -117,8 +117,10 @@ If you use this library in your research, please cite the following paper:
 
 ## Acknowledgements
 
-- @okkyibrohim
-- @fgarnadi
+- [@okkyibrohim](https://github.com/okkyibrohim)
+- [@fgarnadi](https://github.com/fgarnadi)
+- [@mohamadarvin25](https://github.com/mohammadarvin25)
+- [@kimnzh](https://github.com/kimnzh)
 
 ## License
 

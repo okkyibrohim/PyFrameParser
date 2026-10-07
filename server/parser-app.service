@@ -1,0 +1,20 @@
+[Unit]
+Description=parser-app service
+After=network.target
+
+[Service]
+Type=simple
+User=admin
+Group=admin
+WorkingDirectory=/home/admin/PyFrameParser/server
+
+ExecStart=/home/admin/PyFrameParser/.venv/bin/gunicorn \
+    -c gunicorn.config.py \
+    wsgi:app
+
+Restart=always
+
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

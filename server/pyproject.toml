@@ -1,0 +1,15 @@
+[project]
+name = "pyframeparser-server"
+version = "0.1.0"
+description = "HTTP server implementation for PyFrameParser"
+readme = "README.md"
+requires-python = "==3.8.*"
+dependencies = [
+  "flask-pydantic>=0.11.0",
+  "gunicorn>=23.0.0",
+  "pydantic>=1.8.2",
+  "pyframeparser",
+]
+
+[tool.uv.sources]
+pyframeparser = { workspace = true }

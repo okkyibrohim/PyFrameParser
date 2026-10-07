@@ -1,0 +1,181 @@
+\section{Library Overview}
+\label{sec:overview}
+
+PyFrameParser is packaged as a Python module available on the Python Package Index. PyFrameParser can be installed via pip, as follows:
+\begin{verbatim}
+$ pip install PyFrameParser
+\end{verbatim}
+
+In this section, we give an overview of the core components of PyFrameParser.
+
+\subsection{System Architecture}
+
+PyFrameParser is designed with a modular architecture that separates concerns between parsing, prediction, and output representation. Figure \ref{fig:architecture} illustrates the high-level system architecture, which consists of three primary layers.
+
+\begin{figure}[htbp]
+    \centering
+    % Replaced static image with TikZ diagram to include Word Embedding
+    % Requires \usepackage{tikz} and \usetikzlibrary{shapes,arrows,positioning,fit,backgrounds} in main preamble
+    \resizebox{0.95\columnwidth}{!}{
+    \begin{tikzpicture}[
+        node distance=0.8cm and 0.5cm,
+        box/.style={rectangle, draw=black, rounded corners, fill=white, align=center, minimum height=0.8cm, font=\small},
+        layer/.style={rectangle, draw=gray, dashed, inner sep=0.4cm, fill=gray!5, rounded corners},
+        arrow/.style={-latex, thick}
+    ]
+        % Interface Layer
+        \node[box, fill=blue!10, minimum width=5cm] (api) {Python API / HTTP REST API};
+        \node[fit=(api), layer, label=north west:\textbf{Interface Layer}] (layer1) {};
+
+        % Parsing Layer
+        \node[box, fill=green!10, below=1.5cm of layer1.south west, anchor=north west] (frameparser) {FrameParser};
+        \node[box, fill=green!10, right=of frameparser] (spanpredictor) {SpanPredictor};
+        \node[box, fill=green!10, right=of spanpredictor] (result) {TextFrameResult};
+        \node[fit=(frameparser)(spanpredictor)(result), layer, label=north west:\textbf{Parsing Layer}] (layer2) {};
+
+        % Model Layer
+        \node[box, fill=orange!10, below=1.5cm of frameparser.south west, anchor=north west] (embedding) {Word Embedding\\(XLM-RoBERTa)};
+        \node[box, fill=orange!10, right=0.3cm of embedding] (finder) {Span Finder\\(BIO)};
+        \node[box, fill=orange!10, right=0.3cm of finder] (extractor) {Span Extractor};
+        \node[box, fill=orange!10, right=0.3cm of extractor] (typing) {Span Typing};
+        
+        \node[fit=(embedding)(finder)(extractor)(typing), layer, label=north west:\textbf{Model Layer (SpanModel)}] (layer3) {};
+
+        % global positioning adjustment (centering layers)
+        % Note: simple relative positioning might be off without calc, but anchors help.
+
+        % Connections between layers
+        \draw[arrow] (layer1.south) -- (layer2.north);
+        \draw[arrow] (layer2.south) -- (layer3.north);
+
+        % Connections within Model Layer to show flow
+        \draw[arrow] (embedding) -- (finder);
+        \draw[arrow] (finder) -- (extractor);
+        \draw[arrow] (extractor) -- (typing);
+
+    \end{tikzpicture}
+    }
+    \caption{PyFrameParser system architecture showing three layers: Interface Layer, Parsing Layer, and Model Layer (SpanModel including Word Embedding, Span Finder, Extractor, and Typing).}
+    \label{fig:architecture}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Interface Layer}: Provides two access modes: a Python API for local usage and an HTTP REST API for remote access.
+    \item \textbf{Parsing Layer}: Contains the core parsing logic including the \texttt{FrameParser} class and the underlying predictor components.
+    \item \textbf{Model Layer}: Houses the neural network models built on AllenNLP and transformer architectures.
+\end{enumerate}
+
+The library currently supports the LOME (Large Ontology Multilingual Extraction) parser \cite{Xia2021}, which employs XLM-RoBERTa \cite{Conneau2020} as its multilingual encoder backbone. This design choice enables frame-semantic parsing across multiple languages while maintaining state-of-the-art performance.
+
+\subsection{Core Components}
+
+\subsubsection{FrameParser}
+
+The \texttt{FrameParser} class serves as the primary entry point for frame-semantic parsing. It provides a clean interface for loading pre-trained models and parsing input text. The class encapsulates the complexity of model initialization, tokenization, and prediction through two main methods:
+
+\begin{itemize}
+    \item \texttt{load\_frame\_model()}: A class method that loads a pre-trained frame parsing model from disk. It accepts parameters for model path, model type (currently supporting LOME), and GPU device selection for hardware acceleration.
+    \item \texttt{text\_frame\_parser()}: The primary parsing method that accepts raw text input and returns structured frame annotations.
+\end{itemize}
+
+\subsubsection{TextFrameResult}
+
+The parsing output is encapsulated in a \texttt{TextFrameResult} object, which contains three fields:
+\begin{itemize}
+    \item \texttt{text}: The original input text.
+    \item \texttt{frame\_list}: A list of tuples containing frame names and their corresponding trigger text spans. This flat representation is suitable for quick iteration and simple downstream processing.
+    \item \texttt{frame\_tree}: A hierarchical JSON structure representing frames with their arguments (frame elements) as nested children. Each node includes the label, character span indices, and confidence score.
+\end{itemize}
+
+To illustrate these output formats, consider parsing the sentence ``The buyer purchased the goods''. The \texttt{frame\_list} output contains:
+\begin{lstlisting}
+[["Commerce_buy", "buyer"],
+ ["Commerce_scenario", "goods"],
+ ["Commerce_buy", "purchased"]]
+\end{lstlisting}
+
+Each tuple represents a detected frame and its trigger word. The \texttt{frame\_tree} provides the hierarchical structure with frame elements:
+\begin{lstlisting}
+[{"label": "Commerce_buy", "span": [2, 2],
+  "confidence": 1.0,
+  "children": [
+    {"label": "Buyer", "span": [0, 1]},
+    {"label": "Goods", "span": [3, 4]}
+  ]}]
+\end{lstlisting}
+
+In this example, the word ``purchased'' (at token index 2) evokes the \textsc{Commerce\_buy} frame, with ``The buyer'' filling the \textit{Buyer} role and ``the goods'' filling the \textit{Goods} role as frame elements.
+
+This dual representation (flat list and hierarchical tree) accommodates different use cases: the flat list is convenient for feature extraction and statistics, while the tree structure preserves the full semantic relationships between frames and their arguments.
+
+\subsubsection{Span Representation}
+
+At the core of the internal data representation is the \texttt{Span} class, which provides a tree-structured representation of frame annotations. Each \texttt{Span} object contains:
+\begin{itemize}
+    \item Boundary indices (start and end positions, both inclusive)
+    \item A label (frame name or frame element role)
+    \item Confidence score from the model
+    \item References to parent and child spans
+\end{itemize}
+
+The \texttt{Span} class supports several operations useful for downstream processing:
+\begin{itemize}
+    \item \textbf{Re-indexing}: Converts between token indices and subword (BPE) indices, necessary when working with transformer models.
+    \item \textbf{JSON serialization}: Bidirectional conversion between \texttt{Span} objects and JSON dictionaries.
+    \item \textbf{Tree traversal}: BFS iteration over all descendants for systematic processing.
+    \item \textbf{Overlap resolution}: Automatic handling of overlapping span predictions.
+    \item \textbf{Ontology mapping}: Label transformation for domain adaptation.
+\end{itemize}
+
+\subsubsection{SpanPredictor}
+
+The \texttt{SpanPredictor} class extends AllenNLP's \texttt{Predictor} interface to provide frame-semantic prediction capabilities. It handles tokenization using SpaCy, manages batch processing with configurable token limits, and supports multiple output formats including span objects, JSON, and Concrete (a serialization format for NLP annotations). Key features include:
+
+\begin{itemize}
+    \item \textbf{Single sentence prediction}: The \texttt{predict\_sentence()} method processes individual sentences with automatic tokenization for string inputs.
+    \item \textbf{Batch prediction}: The \texttt{predict\_batch\_sentences()} method efficiently processes multiple sentences with dynamic batching based on token count.
+    \item \textbf{Force decoding}: Advanced functionality for constrained prediction given known parent spans.
+\end{itemize}
+
+\subsubsection{SpanModel}
+
+The neural architecture is implemented in the \texttt{SpanModel} class, which combines several components:
+\begin{itemize}
+    \item \textbf{Word Embedding}: A transformer-based text field embedder (XLM-RoBERTa) that produces contextualized token representations.
+    \item \textbf{Span Finder}: A BIO-tagging module that identifies candidate spans in the input sequence.
+    \item \textbf{Span Extractor}: Combines token embeddings to produce span-level representations.
+    \item \textbf{Span Typing}: A classification module that assigns frame labels to identified spans.
+\end{itemize}
+
+The model performs recursive prediction, first identifying frames (events) and then predicting their arguments (frame elements) as child spans.
+
+\subsection{HTTP API Server}
+
+For deployment scenarios where local model loading is impractical, PyFrameParser provides a Flask-based HTTP API server. The server architecture includes:
+
+\begin{itemize}
+    \item \textbf{PredictorStore}: Manages the loaded model instance and handles parse requests.
+    \item \textbf{CredentialsStore}: Manages API authentication through token-based access control with configurable usage limits.
+    \item \textbf{RateLimiterStore}: Implements rate limiting to prevent API abuse, with configurable time-to-live (TTL) windows.
+\end{itemize}
+
+The server exposes two endpoints:
+\begin{itemize}
+    \item \texttt{GET /health}: A health check endpoint for monitoring.
+    \item \texttt{POST /v1/parse}: The main parsing endpoint that accepts JSON requests with a \texttt{text} field and returns the parsed frame structure.
+\end{itemize}
+
+Authentication is performed via Bearer tokens in the Authorization header, enabling secure access for research collaborations while protecting computational resources.
+
+\subsection{Dependencies and Environment}
+
+PyFrameParser is built on several key dependencies:
+\begin{itemize}
+    \item \textbf{AllenNLP} (v2.10.1): Provides the training and prediction infrastructure.
+    \item \textbf{SpaCy}: Handles tokenization with the \texttt{en\_core\_web\_sm} model.
+    \item \textbf{PyTorch}: Powers the neural network computations with optional GPU acceleration.
+    \item \textbf{Flask and Gunicorn}: Enable the HTTP API server deployment.
+    \item \textbf{Pydantic}: Ensures type validation for API requests and responses.
+\end{itemize}
+
+Due to compatibility requirements inherited from the underlying LOME implementation and AllenNLP, PyFrameParser requires Python 3.8. We recommend using a virtual environment for installation to avoid dependency conflicts.

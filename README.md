@@ -39,6 +39,8 @@ print(result)
 
 ## HTTP API Usage
 
+For the deployed service, see the [API usage guide](API_USAGE.md).
+
 The API is free to use for research purposes, but requires an API token.  
 Please contact [okkyibrohim@cs.ui.ac.id](mailto:okkyibrohim@cs.ui.ac.id) to request access using an academic email (and CC your supervisor if you are a university student).
 
@@ -50,6 +52,15 @@ This endpoint accepts a JSON payload with the following structure:
 
 ```bash
 curl -X POST http://localhost:8000/v1/parse \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer {TOKEN}" \
+    -d '{"text": "input text to be parsed"}'
+```
+
+For production use, the endpoint is active with the use of following:
+
+```bash
+curl -X POST https://frameparser.cs.ui.ac.id/v1/parse \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer {TOKEN}" \
     -d '{"text": "input text to be parsed"}'

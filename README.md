@@ -39,6 +39,8 @@ print(result)
 
 ## HTTP API Usage
 
+For the deployed service, see the [API usage guide](API_USAGE.md).
+
 The API is free to use for research purposes, but requires an API token.  
 Please contact [okkyibrohim@cs.ui.ac.id](mailto:okkyibrohim@cs.ui.ac.id) to request access using an academic email (and CC your supervisor if you are a university student).
 

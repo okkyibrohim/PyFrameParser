@@ -57,6 +57,15 @@ curl -X POST http://localhost:8000/v1/parse \
     -d '{"text": "input text to be parsed"}'
 ```
 
+For production use, the endpoint is active with the use of following:
+
+```bash
+curl -X POST https://frameparser.cs.ui.ac.id/v1/parse \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer {TOKEN}" \
+    -d '{"text": "input text to be parsed"}'
+```
+
 The response will contain the parsed frame semantic information in JSON format:
 
 ```json
